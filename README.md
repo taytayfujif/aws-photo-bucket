@@ -6,7 +6,7 @@
 Use your knowledge of AWS Lambda, Amazon S3, Serverless, Amazon API Gateway, and jQuery to make a client side request to a public S3 bucket and dynamically display the contents of the bucket. IE they will be images.
 
 ## Flow of Data
-![](https://i.imgur.com/U5im4z0.jpg)
+![](https://i.imgur.com/t9KJAEg.jpg)
 
 
 ## Prerequisites
@@ -27,17 +27,17 @@ Use your knowledge of AWS Lambda, Amazon S3, Serverless, Amazon API Gateway, and
          - index.html
          - styles.css
          - app.js
-     - handler.js (will generate when you create Serverless template/boilerplate)
-     - serverless.yml (will generate when you create Serverless template/boilerplate)
-     - package.json
+     - handler.js (will generate when you create Serverless boilerplate)
+     - serverless.yml (will generate when you create Serverless boilerplate)
+     - package.json (npm init --yes)
  - Import jQuery library.
  - Do a sanity check in browser.
  - Check if you have AWS CLI and Serverless installed.
  - Configure your AWS CLI with your given credentials.
- - Create Serverless template/boilerplate `aws-nodejs`.
+ - Create Serverless boilerplate `aws-nodejs`.
 
 ## Tasks
-You will be creating a Lambda function that makes a request to a public S3 bucket that is full of random images. From there, you will be creating a client side scripts to render the images when your Lambda function is executed.
+You will be creating a Lambda function that makes a request to a public S3 bucket that is full of random images. From there, you will be creating a client-side scripts to render the images when your Lambda function is executed.
 
 ## Steps
 1. Build AWS Lambda function that makes a request to the public API bucket `photo-bucket-tmp-prjct`.
@@ -47,9 +47,10 @@ const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 const params = { Bucket: 'photo-bucket-tmp-prjct'};
 ```
- - Use s3.listObjects in your lambda function [s3.listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property)
-2. Configure .yml for your function with ```region:us-west-2``` & add the code below to allow CORS:
+ - Use [s3.listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property) method in your lambda function to list contents of public S3 bucket.
+2. Configure .yml for your Lambda function with a GET route & add the code below to allow CORS:
 ```
+  region: us-west-2
   cors:
   origin: '*'
   headers:
@@ -61,7 +62,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
     - X-Amz-User-Agent
   allowCredentials: false
  ```
- 3. Test your AWS Lambda function locally(You should get a response back from the public API bucket like the code below).
+ 3. Test your AWS Lambda function locally(You should get a response back from the public S3 bucket like the code below).
  ```
 {
     "statusCode": 200,
@@ -75,13 +76,13 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  4. Deploy your function(Take note of the endpoint that is generated).
   - Note: If you make a change to your function or .yml file you will need to re-deploy
  5. Build a client-side GET request to your specific Lambda URL.
- 6. Create a button. When user clicks the button, it should initiate an ajax request to your specific Lambda URL, which then triggers your specific lambda to make a request to the public S3 bucket, then will dynamically display all the images from the public S3 bucket.
-  - Note: Use public S3 bucket image path to help you display all images `https://s3-us-west-2.amazonaws.com/photo-bucket-tmp-prjct/`.
- 7. Use the commands referenced below to make enable static website hosting. Then run appropriate command to sync your client-side files to your bucket(ie. html, css , js files). Your public url will be in the format of ```http://bucket-name.s3-website-region.amazonaws.com/```. Test url in browser
+ 6. Create a button. When user clicks the button, it should initiate an ajax request to your specific Lambda URL, which then triggers your specific lambda to make a request to the public S3 bucket, then will dynamically display all the images from the public S3 bucket on the client-side.
+  - Note: Use public S3 bucket image path to help you display all images `https://s3-us-west-2.amazonaws.com/photo-bucket-tmp-prjct/Key`.
+ 7. Use the commands referenced below to make enable static website hosting on ***YOUR*** S3 bucket. Then run appropriate command to sync your client-side files to your bucket(ie. html, css , js files). Your public url will be in the format of ```http://bucket-name.s3-website-region.amazonaws.com/```. Test url in browser
 
 ### Testing
-  - Run live-server to test files in your client-side directory
-  - Use Postman to check your routes
+  - Run live-server to run your .html
+  - Use Postman to check your endpoints.
 
 ### Useful Commands
  -  ***Test function locally***
@@ -98,15 +99,14 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  - ***Function logs***
 
   ```sls logs -f "function name"```
-
- - ***AWS CLI help***
-
-  ```aws help```
+  
+ - ***Create Serverless boilerplate***
+ ``` sls create --template aws-nodejs```
 
  - ***Serverless CLI help***
 
   ```sls help```
-
+  
  - ***Make Bucket A Static Website***
 
   ```aws s3 website s3://website-bucket-name/ --index-document index.html --error-document error.html```
@@ -118,6 +118,10 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  - ***List all s3 Buckets***
 
   ```aws s3api list-buckets```
+  
+ - ***AWS CLI help***
+
+  ```aws help```
 
 
 ### Resources
