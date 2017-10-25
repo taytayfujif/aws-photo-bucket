@@ -101,6 +101,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
   ```sls logs -f "function name"```
   
  - ***Create Serverless boilerplate***
+ 
  ``` sls create --template aws-nodejs```
 
  - ***Serverless CLI help***
