@@ -76,7 +76,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
   - Note: You will be using `\"Key\":\"random-pictures-1.jpg\"` to dynamically display all the images from public S3 bucket in your app.js
  6. Deploy your function(Take note of the endpoint that is generated).
   - Note: If you make a change to your function or .yml file you will need to re-deploy serverless
- 6. Build a client-side GET request to your specific Lambda URL.
+ 7. Build a client-side GET request to your specific Lambda URL.
  8. Create a button. When user clicks the button, it should initiate an ajax request to your specific Lambda URL, which then triggers your specific lambda to make a request to the public S3 bucket, then will dynamically display all the images from the public S3 bucket on the client-side.
   - Note: Use public S3 bucket image path to help you display all images `https://s3-us-west-2.amazonaws.com/photo-bucket-tmp-prjct/Key`.
  9. Use the commands referenced below to make enable static website hosting on ***YOUR*** S3 bucket. Then run appropriate command to sync your client-side files to your bucket(ie. html, css , js files). Your public url will be in the format of ```http://bucket-name.s3-website-region.amazonaws.com/```. Test url in browser
