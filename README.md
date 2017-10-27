@@ -41,7 +41,7 @@ You will be creating a Lambda function that makes a request to a public S3 bucke
 
 ## Steps
 1. Build AWS Lambda function that makes a request to the public API bucket `photo-bucket-tmp-prjct`.
-Add in the following to your Lambda function:
+Add in the following to your handler.js:
 ```
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
@@ -50,19 +50,20 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  - Use [s3.listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property) method in your lambda function to list contents of public S3 bucket.
 2. Configure .yml for your Lambda function with a GET route & add the code below to allow CORS:
 ```
-  region: us-west-2
   cors:
-  origin: '*'
-  headers:
-    - Content-Type
-    - X-Amz-Date
-    - Authorization
-    - X-Api-Key
-    - X-Amz-Security-Token
-    - X-Amz-User-Agent
-  allowCredentials: false
+    origin: '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+    allowCredentials: false
  ```
- 3. Test your AWS Lambda function locally(You should get a response back from the public S3 bucket like the code below).
+ 3. In your Lambda Function, create proper Access-Control-Allow headers in your response.
+ 4. Deploy Serverless
+ 5. Test your AWS Lambda function locally(You should get a response back from the public S3 bucket like the code below).
  ```
 {
     "statusCode": 200,
@@ -74,7 +75,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  ```
   - Note: You will be using `\"Key\":\"random-pictures-1.jpg\"` to dynamically display all the images from public S3 bucket in your app.js
  4. Deploy your function(Take note of the endpoint that is generated).
-  - Note: If you make a change to your function or .yml file you will need to re-deploy
+  - Note: If you make a change to your function or .yml file you will need to re-deploy serverless
  5. Build a client-side GET request to your specific Lambda URL.
  6. Create a button. When user clicks the button, it should initiate an ajax request to your specific Lambda URL, which then triggers your specific lambda to make a request to the public S3 bucket, then will dynamically display all the images from the public S3 bucket on the client-side.
   - Note: Use public S3 bucket image path to help you display all images `https://s3-us-west-2.amazonaws.com/photo-bucket-tmp-prjct/Key`.
@@ -99,15 +100,15 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  - ***Function logs***
 
   ```sls logs -f "function name"```
-  
+
  - ***Create Serverless boilerplate***
- 
+
  ``` sls create --template aws-nodejs```
 
  - ***Serverless CLI help***
 
   ```sls help```
-  
+
  - ***Make Bucket A Static Website***
 
   ```aws s3 website s3://website-bucket-name/ --index-document index.html --error-document error.html```
@@ -119,7 +120,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
  - ***List all s3 Buckets***
 
   ```aws s3api list-buckets```
-  
+
  - ***AWS CLI help***
 
   ```aws help```
