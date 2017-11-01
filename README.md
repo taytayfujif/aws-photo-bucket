@@ -87,7 +87,7 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
 ### Useful Commands
  -  ***Test function locally***
 
-  ```sls invoke local -f "function name"```
+ ```sls invoke local -f "function name" --path serverless.yml```
  -  ***Deploy function only***
 
   ```sls deploy -f "function name```
