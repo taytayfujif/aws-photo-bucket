@@ -1,23 +1,21 @@
 # AWS Photobucket
-[Intermediate] AWS, S3, Api-Gatway, Lambda, Serverless - Intro into AWS cloud services and Serverless
+[Advanced] AWS, S3, API Gateway, Lambda, Serverless, and ES6 Methods
 
 ## Objective
 
-Use your knowledge of AWS Lambda, Amazon S3, Serverless, Amazon API Gateway, and jQuery to make a client side request to a public S3 bucket and dynamically display the contents of the bucket. IE they will be images.
+You will be making a GET request to API Gateway which invokes a Lambda function to request image data from a specified S3 bucket. After you have recieved data from the S3 bucket, render the images to the frontend. 
 
 ## Flow of Data
 ![AWS Diagram](https://i.imgur.com/wxx5zw2.png)
 
 
 ## Prerequisites
-  - Basic knowledge of HTTP requests using jQuery.
-  - Basic understanding of API's.
-  - Basic understanding of JSON.
+  - Basic understanding of JSON data.
   - Basic understanding of AWS Lambda
   - Basic understanding of Amazon S3
-  - Basic understanding of Amazon API-Gateway
-  - Basic understanding of Serverless & CLI
-  - Basic understanding of AWS CLI
+  - Basic understanding of Amazon API Gateway
+  - Basic understanding of Serverless 
+
 
 ## Setup
  - Fork & clone repo.
