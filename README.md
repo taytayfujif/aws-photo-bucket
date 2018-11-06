@@ -6,7 +6,7 @@
 Use your knowledge of AWS Lambda, Amazon S3, Serverless, Amazon API Gateway, and jQuery to make a client side request to a public S3 bucket and dynamically display the contents of the bucket. IE they will be images.
 
 ## Flow of Data
-![](https://i.imgur.com/t9KJAEg.jpg)
+![AWS Diagram](https://i.imgur.com/wxx5zw2.png)
 
 
 ## Prerequisites
