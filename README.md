@@ -1,5 +1,105 @@
 # AWS Photobucket
-[Advanced] AWS, S3, API Gateway, Lambda, Serverless, and ES6 Methods
+[Advanced] AWS-sdk, s3, API Gateway, Lambda, Serverless, and ES6 Methods
+
+## What is Amazon s3?
+- Stands for simple storage service
+- One of the first services in AWS
+- S3 is a safe place to store any type of files (text files, images, mp3)
+- You can think of s3 as Dropbox or GoogleDrive
+- Is Object based(Key & Value pair)
+- FIles are stored in buckets(similar to folder)
+- Bucket Names must be unique
+
+## What is aws-sdk?
+- Software Development Kit
+- A collection of tools for developers creating web applications provided by aws
+- Provides APIs, class libraries, and code samples
+- We will be using aws-sdk to communicate with s3
+
+## S3 and aws-sdk demo
+---
+1. After creating your serverless boilerplate/template run
+```
+npm init --yes
+```
+  - This will create a package.json file for you
+  - package.json will allow us to install aws-sdk npm pakaage to use
+2. To install aws-sdk run
+```
+npm install aws-sdk
+```
+  - You should now see a `node_modules` directory in your current directory
+
+3. Require aws-sdk and create an s3 client in our handler.js file
+```js
+  const AWS = require('aws-sdk');
+  const s3 = new AWS.S3();
+```
+## Create an s3 bucket and pass in data **locally**
+
+[Create Bucket - AWS SDK for JavaScript](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#createBucket-property)
+```js
+s3.createBucket({ Bucket: "YOUR_BUCKET_NAME"}, function(err, data) {
+   if (err) console.log(err, err.stack); // an error occurred
+   else     console.log(data); // successful response
+ });
+```
+1. Hard code YOUR_BUCKET_NAME for now(We will add dynamically through Postman)
+2. Remove `async` keyword from lambda function
+3. Add `callback` parameter in lambda function
+4. Store return vaule in a variable named `response`
+5. Pass `response` into callback function `callback(null, response)`
+6. Run lambda function locally
+7. Pass in bucket name data dynamically
+8. Create a `dummyData.json` file. Add the following:
+```json
+{
+    "bucketName": "testingjay123"
+}
+```
+13. run with --path to pass in `dummyData.json`
+```
+serverless invoke local --path ./data.json
+```
+## Post to a deployed lambda
+1. Before deploying lambda function, lets add a few code snippets to our `serverless.yml` file
+2. Add `iamRoleStatements:` to the end of `provider:`:
+```yml
+  provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-west-2
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+```
+- This allows our deployed lambda function to access the s3 service
+3. Add `integration: lambda` under `cors: true`
+```yml
+functions:
+  create:
+    handler: handler.create
+    events:
+      - http: 
+          path: create
+          method: post
+          cors: true
+          integration: lambda
+          request:
+            passThrough: WHEN_NO_TEMPLATES
+            template:
+              application/x-www-form-urlencoded: '{ "body" : "$input.body" }'
+
+```
+- This allows us to recieve data passed in through Postman
+4. Deploy serverless
+5. Copy and paste the returned POST endpoint url and paste into Postman  Post method
+6. In Postman, select `Body` -> `raw` -> select `JSON(application/json)` from the dropdown that says `Text`
+7. In the below input field, type in JSON data format exactly like the `dummyData.json` file
+
 
 ## Objective
 
@@ -19,20 +119,12 @@ You will be making a GET request to API Gateway which invokes a Lambda function 
 
 ## Setup
  - Fork & clone repo.
- - Npm install ```aws-sdk``` & require in packages.
- - - Create file structure:
-     - client-side
+ - Create file structure:
+     - public
          - index.html
          - styles.css
          - app.js
-     - handler.js (will generate when you create Serverless boilerplate)
-     - serverless.yml (will generate when you create Serverless boilerplate)
-     - package.json (npm init --yes)
- - Import jQuery library.
- - Do a sanity check in browser.
- - Check if you have AWS CLI and Serverless installed.
- - Configure your AWS CLI with your given credentials.
- - Create Serverless boilerplate `aws-nodejs`.
+ - Create Serverless boilerplate/template 
 
 ## Tasks
 You will be creating a Lambda function that makes a request to a public S3 bucket that is full of random images. From there, you will be creating a client-side scripts to render the images when your Lambda function is executed.
@@ -78,57 +170,11 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
   - Note: Use public S3 bucket image path to help you display all images `https://s3-us-west-2.amazonaws.com/photo-bucket-tmp-prjct/Key`.
  8. Use the commands referenced below to make enable static website hosting on ***YOUR*** S3 bucket. Then run appropriate command to sync your client-side files to your bucket(ie. html, css , js files). Your public url will be in the format of ```http://bucket-name.s3-website-region.amazonaws.com/```. Test url in browser
 
-### Testing
-  - Run live-server to run your .html
-  - Use Postman to check your endpoints.
-
-### Useful Commands
- -  ***Test function locally***
-
- ```sls invoke local -f "function name" --path serverless.yml```
- -  ***Deploy function only***
-
-  ```sls deploy -f "function name```
-
- - ***Deploy everything***
-
-  ```sls deploy```
-
- - ***Function logs***
-
-  ```sls logs -f "function name"```
-
- - ***Create Serverless boilerplate***
-
- ``` sls create --template aws-nodejs```
-
- - ***Serverless CLI help***
-
-  ```sls help```
-
- - ***Make Bucket A Static Website***
-
-  ```aws s3 website s3://website-bucket-name/ --index-document index.html --error-document error.html```
-
- - ***Sync client-side files to Static Website Bucket***
-
-  ```aws s3 sync projectfolder s3://website-bucket-name --acl public-read```
-
- - ***List all s3 Buckets***
-
-  ```aws s3api list-buckets```
-
- - ***AWS CLI help***
-
-  ```aws help```
-
 
 ### Resources
+[AWS.S3 — AWS SDK for JavaScript](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getBucketWebsite-property)
 
-- [s3.listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property)
+[AWS.S3 - AWS SDK - listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property)
 
-- [Serverless](https://serverless.com/framework/docs/providers/aws/)
-
-- [AWS CLI Reference](https://docs.aws.amazon.com/cli/latest/reference/)
 
 
