@@ -100,6 +100,23 @@ functions:
 6. In Postman, select `Body` -> `raw` -> select `JSON(application/json)` from the dropdown that says `Text`
 7. In the below input field, type in JSON data format exactly like the `dummyData.json` file
 
+## How to Create Multiple Lambda Functions
+1. Create new directory `lambdas`
+2. Rename `handler.js` to lambda name `create.js`
+3. Move existing lambda function `create.js` to 'lambdas' directory
+4. Change `module.exports.create` to `module.exports.main` in your `create.js` file
+5. Change `handler` below `functions` to `create`
+6. change value of `handler` property to lambdas/create.main
+```yml
+functions:
+  create:
+    handler: lambdas/create.main
+```
+
+## Class Excercise
+- Make a `GET` request to get All Buckets data
+- Look through [AWS SDK for JavaScript](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listBuckets-property) documentation to find the correct method
+
 
 ## Objective
 
@@ -175,6 +192,3 @@ const params = { Bucket: 'photo-bucket-tmp-prjct'};
 [AWS.S3 — AWS SDK for JavaScript](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#getBucketWebsite-property)
 
 [AWS.S3 - AWS SDK - listObjects](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#listObjects-property)
-
-
-
